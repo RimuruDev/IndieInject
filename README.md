@@ -22,6 +22,8 @@ git clone https://github.com/RimuruDev/IndieInject.git
 ```
 2. Или скачайте последний [Release](https://github.com/RimuruDev/IndieInject/releases) и перенесите файл `.package` в ваш проект Unity.
 
+<img width="200" alt="image" src="https://github.com/RimuruDev/IndieInject/assets/85500556/7ff69f43-705a-4d0e-a640-6d8e331df6a0">
+
 ## Примеры использования
 В этом примере: инекция конфига + героя + transform родителя для героя.
 
@@ -31,6 +33,9 @@ git clone https://github.com/RimuruDev/IndieInject.git
 Откройте папку Samples далее папка _Scenes сцена SampleScene.unity
 
 ---
+
+![IndieInject-Log](https://github.com/RimuruDev/IndieInject/assets/85500556/d961a5d2-443c-4bb1-b4e0-6ac5da263aba)
+
 
 ### 1. Настройка `SceneContext`
 
@@ -145,6 +150,8 @@ public class HeroFactory : MonoBehaviour
 #### Создание и удаление IndieInjector через меню редактора
 
 Вы можете создать или удалить объект с компонентом `IndieInjector` через меню Unity:
+
+<img width="200" alt="image" src="https://github.com/RimuruDev/IndieInject/assets/85500556/7ff69f43-705a-4d0e-a640-6d8e331df6a0">
 
 ### Лицензия
 
