@@ -1,4 +1,6 @@
 # IndieInject
+
+# WARNING!!! Still in development, do not use for production purposes!
  
 TODO:
 - Add docs
