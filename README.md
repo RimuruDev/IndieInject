@@ -164,6 +164,7 @@ public class HeroFactory : MonoBehaviour
 ---
 
 ## TODO:
+- Добавить Project Context
 - Добавить WeakReference
 - Написать Readme.md
 - Добавить пример с CompositionRoot
