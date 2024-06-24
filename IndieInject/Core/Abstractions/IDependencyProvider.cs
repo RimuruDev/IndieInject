@@ -8,9 +8,10 @@
 //
 // **************************************************************** //
 
-namespace IndieInjector
+namespace IndieInject
 {
     public interface IDependencyProvider
     {
+        public bool IsSingleton { get; }
     }
 }

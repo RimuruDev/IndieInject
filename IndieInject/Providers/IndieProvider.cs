@@ -10,7 +10,7 @@
 
 using UnityEngine;
 
-namespace IndieInjector
+namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
     public class IndieProvider : MonoBehaviour, IDependencyProvider
@@ -24,5 +24,6 @@ namespace IndieInjector
         //     Debug.Log("Providing PersistentProgressService");
         //     return new PersistentProgressService();
         // }
+        public bool IsSingleton { get; }
     }
 }

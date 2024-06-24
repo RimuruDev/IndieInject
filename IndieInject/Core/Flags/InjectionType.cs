@@ -10,7 +10,7 @@
 
 using System;
 
-namespace IndieInjector
+namespace IndieInject
 {
     [Flags]
     public enum InjectionType

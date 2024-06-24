@@ -11,7 +11,7 @@
 using System;
 using UnityEngine;
 
-namespace IndieInjector
+namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
     public sealed class IndieInjectException : Exception
