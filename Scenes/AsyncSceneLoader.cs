@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DIedMoth.SceneLoader
@@ -8,10 +9,10 @@ namespace DIedMoth.SceneLoader
     {
         public void LoadScene(string sceneName, Action onSceneLoadedCallback = null)
         {
-            LoadSceneCoroutine(sceneName, onSceneLoadedCallback);
+            LoadSceneProcess(sceneName, onSceneLoadedCallback);
         }
 
-        private async void LoadSceneCoroutine(string sceneName, Action onSceneLoadedCallback = null)
+        private async void LoadSceneProcess(string sceneName, Action onSceneLoadedCallback = null)
         {
             if (GetCurrentSceneName() == sceneName)
             {
@@ -19,14 +20,42 @@ namespace DIedMoth.SceneLoader
                 return;
             }
 
-            var loadSceneOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            var loadSceneOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            
+            loadSceneOperation.allowSceneActivation = false;
+
+            // loadSceneOperation.completed += Completed;
             
             while (!loadSceneOperation.isDone)
-                await UniTask.WaitForFixedUpdate();
+            {
+                if (loadSceneOperation.progress >= 0.9f)
+                {
+                    onSceneLoadedCallback?.Invoke();
+
+                    Debug.Log(GameObject.FindObjectsOfType<MonoBehaviour>().Length);
+                    
+                    loadSceneOperation.allowSceneActivation = true;
+                }
+                
+                await UniTask.Yield();
+            }
             
-            onSceneLoadedCallback?.Invoke();
+            //onSceneLoadedCallback?.Invoke();
+            
+            void Completed(AsyncOperation obj)
+            {
+                onSceneLoadedCallback?.Invoke();
+            }
         }
 
+
         public string GetCurrentSceneName() => SceneManager.GetActiveScene().name;
+
+        class LoadProcess
+        {
+            public string ToScene;
+            public string BeforeLoaded;
+            public string OnLoaded;
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace DIedMoth.Scenes
 
         public void LoadScene()
         {
+            Debug.Log("Scene loaded " + GetSceneName());
+
             Modules.StartAllModules();
             OnSceneLoaded();
         }

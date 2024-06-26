@@ -10,10 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using DIedMoth.Scenes;
-using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace IndieInject

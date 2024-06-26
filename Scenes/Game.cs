@@ -1,10 +1,8 @@
-using System;
 using Cysharp.Threading.Tasks;
-using DIedMoth.LevelGeneration;
-using DIedMoth.ServiceLocators;
 using DIedMoth.SceneLoader;
 using IndieInject;
 using UnityEngine;
+using System;
 
 namespace DIedMoth.Scenes
 {
@@ -20,11 +18,6 @@ namespace DIedMoth.Scenes
         public static readonly IndieInjector Injector = new IndieInjector();
         
         private static readonly AsyncSceneLoader Loader = new();
-
-        static Game()
-        {
-            //Tick();
-        }
 
         public static void SwitchTo<TScene>(TScene scene)
             where TScene : Scene

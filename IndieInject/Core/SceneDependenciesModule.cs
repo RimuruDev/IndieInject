@@ -19,6 +19,8 @@ namespace IndieInject
 
         public override void StartModule(Scene scene)
         {
+            Debug.Log("Start Module");
+            
             var all = GameObject.FindObjectsOfType<MonoBehaviour>(true);
 
             foreach (var monoBehaviour in all)
