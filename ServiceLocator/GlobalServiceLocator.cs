@@ -1,8 +1,8 @@
-namespace destructive_code.ServiceLocators
+namespace DIedMoth.ServiceLocators
 {
     public sealed class GlobalServiceLocator
     {
-        public readonly LocalServiceLocator<object> GlobalInstances = new LocalServiceLocator<object>();
-        public readonly LocalServiceLocator<object> SceneInstances = new LocalServiceLocator<object>();
+        public readonly ServiceLocator<object> GlobalInstances = new ServiceLocator<object>();
+        public readonly ServiceLocator<object> SceneInstances = new ServiceLocator<object>();
     }
 }

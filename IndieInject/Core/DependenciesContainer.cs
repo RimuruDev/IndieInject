@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using IndieInject;
 using UnityEngine;
 
 namespace IndieInject
 {
     public sealed class DependenciesContainer
     {
-        private Dictionary<Type, Dependency> dependencies;
+        private readonly Dictionary<Type, Dependency> dependencies = new ();
 
         public Dependency Get<TDependency>()
         {
@@ -16,7 +15,12 @@ namespace IndieInject
         
         public Dependency Get(Type type)
         {
-            return dependencies[type];
+            if (dependencies.TryGetValue(type, out var dependency))
+            {
+                return dependency;
+            }
+
+            return null;
         }
         
         public void Add(Type dependencyType, Dependency dependency)

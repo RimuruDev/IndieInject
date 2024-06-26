@@ -1,9 +1,9 @@
 using System;
-using destructive_code.GameObjects;
+using DIedMoth.GameObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace destructive_code.Scenes
+namespace DIedMoth.Scenes
 {
     public class DrankFabric
     {

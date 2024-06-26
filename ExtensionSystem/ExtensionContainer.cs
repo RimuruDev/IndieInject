@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace destructive_code.ExtensionSystem
+namespace DIedMoth.ExtensionSystem
 {
     public sealed class ExtensionContainer
     {

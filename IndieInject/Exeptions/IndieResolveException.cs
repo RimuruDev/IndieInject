@@ -14,17 +14,17 @@ using UnityEngine;
 namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
-    public sealed class IndieInjectException : Exception
+    public sealed class IndieResolveException : Exception
     {
-        public IndieInjectException() : base()
+        public IndieResolveException() : base()
         {
         }
 
-        public IndieInjectException(string message) : base(message)
+        public IndieResolveException(string message) : base(message)
         {
         }
 
-        public IndieInjectException(string message, Exception innerException) : base(message, innerException)
+        public IndieResolveException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

@@ -14,8 +14,14 @@ using UnityEngine;
 namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public sealed class ProvideAttribute : Attribute
     {
+        public bool IsSingleton;
+
+        public ProvideAttribute(bool isSingleton)
+        {
+            IsSingleton = isSingleton;
+        }
     }
 }

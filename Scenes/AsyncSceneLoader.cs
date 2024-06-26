@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
-namespace destructive_code.SceneLoader
+namespace DIedMoth.SceneLoader
 {
     public sealed class AsyncSceneLoader
     {

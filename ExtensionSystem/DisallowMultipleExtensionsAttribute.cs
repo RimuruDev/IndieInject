@@ -1,6 +1,6 @@
 using System;
 
-namespace destructive_code.ExtensionSystem
+namespace DIedMoth.ExtensionSystem
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class DisallowMultipleExtensionsAttribute : Attribute

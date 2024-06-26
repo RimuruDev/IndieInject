@@ -8,22 +8,24 @@
 //
 // **************************************************************** //
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
-    public class IndieProvider : MonoBehaviour, IDependencyProvider
+    public class MonoProvider : MonoBehaviour, IDependencyProvider
     {
-        // =================== //
-        // NOTE: Resolve this! //
-        // =================== //
-        // [Provide]
-        // public PersistentProgressService ProvidePersistentProgressService()
-        // {
-        //     Debug.Log("Providing PersistentProgressService");
-        //     return new PersistentProgressService();
-        // }
-        public bool IsSingleton { get; }
+        [Provide(true)]
+        public List<Terrain> ProvidePersistentProgressService()
+        {
+            return new List<Terrain>();
+        }
+        
+        [Provide(true)]
+        public List<string> Test()
+        {
+            return new List<string>();
+        }
     }
 }

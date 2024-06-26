@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace destructive_code.GameObjects
+namespace DIedMoth.GameObjects
 {
     [DisallowMultipleComponent]
     public sealed class DestroyTimer : DestroyDelay

@@ -1,4 +1,4 @@
-namespace destructive_code.LevelGeneration.GameStates
+namespace DIedMoth.LevelGeneration.GameStates
 {
     public abstract class GameState
     {

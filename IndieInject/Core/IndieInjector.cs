@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using destructive_code.Scenes;
+using DIedMoth.Scenes;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -26,19 +26,27 @@ namespace IndieInject
             System.Reflection.BindingFlags.NonPublic;
 
         private readonly DependenciesContainer gameContainer = new();
-        private readonly DependenciesContainer sceneContainer = new();
+        private DependenciesContainer sceneContainer;
 
+        #region Registration
         public void RegisterGameDependencies(Startpoint startpoint)
         {
-            var providers = startpoint.GetComponentsInChildren<IDependencyProvider>();
+            var providers
+                = startpoint.GetComponentsInChildren<IDependencyProvider>();
 
             Register(providers, gameContainer);
         }
+        
         public void RegisterSceneDependencies(Scene scene)
         {
-            var providers = scene.Dependencies;
+            sceneContainer = new DependenciesContainer();
             
-            Register(providers, sceneContainer);
+            if (scene.Modules.TryGetModule(out SceneDependenciesModule dependenciesModule))
+            {
+                var providers = dependenciesModule.GetDependencies;
+            
+                Register(providers, sceneContainer);
+            }
         }
 
         private void Register(IDependencyProvider[] providers, DependenciesContainer container)
@@ -54,25 +62,20 @@ namespace IndieInject
                         continue;
                     }
 
-                    var returnType = method.ReturnType;
-                    var fabric = method.Invoke(provider, parameters: null);
+                    Type dependencyType = method.ReturnType;
+                    
+                    bool isSingleton = ((ProvideAttribute) Attribute.GetCustomAttribute(method, typeof(ProvideAttribute))).IsSingleton;
 
-                    if (fabric != null)
-                    {
-                        var dependencyRegistration = new Dependency();
-                        
-                        dependencyRegistration.Fabric = fabric as Func<object>;
-                        dependencyRegistration.IsSingleton = provider.IsSingleton;
-                        
-                        container.Add(returnType, dependencyRegistration);
-                    }
-                    else
-                    {
-                        throw new IndieProvideException($"<color=red>Provider {provider.GetType().Name} returned null for {returnType.Name}.</color>");
-                    }
+                    Func<object> fabric = (Func<object>)Delegate.CreateDelegate(typeof(Func<object>), null, method);
+                    
+                    var dependencyRegistration = new Dependency(dependencyType, fabric, isSingleton);
+
+                    container.Add(dependencyType, dependencyRegistration);
                 }
             }
         }
+
+        #endregion
 
         public void Inject(object toInject)
         {
@@ -90,7 +93,14 @@ namespace IndieInject
                     
                         var requiredParameters = info.GetParameters();
 
-                        info.Invoke(toInject, requiredParameters.Select(parameter => Find(parameter.ParameterType)).ToArray());
+                        List<object> parameters = new List<object>();
+
+                        foreach (var parameter in requiredParameters)
+                        {
+                            parameters.Add(Find(parameter.ParameterType).GetInstance());
+                        }
+
+                        info.Invoke(toInject, parameters.ToArray());
                     }
                 }
             }
@@ -105,7 +115,7 @@ namespace IndieInject
                     {
                         if (attribute is not InjectAttribute) continue;
                         
-                        info.SetValue(toInject, Find(info.FieldType));
+                        info.SetValue(toInject, Find(info.FieldType).GetInstance());
                     }
                 }
             }
@@ -120,24 +130,24 @@ namespace IndieInject
                     {
                         if (attribute is not InjectAttribute) continue;
 
-                        info.SetValue(toInject, Find(info.PropertyType));
+                        info.SetValue(toInject, Find(info.PropertyType).GetInstance());
                     }
                 }
             }
         }
 
-        private object Find(Type type)
+        private Dependency Find(Type type)
         {
-            if (gameContainer.Get(type) == null)
+            if (gameContainer.Get(type) != null)
             {
                 return gameContainer.Get(type);
             }
-            else if (sceneContainer.Get(type) != null)
+            if (sceneContainer.Get(type) != null)
             {
-                return sceneContainer.Get(type) != null;
+                return sceneContainer.Get(type);
             }
 
-            return null;
+            throw new IndieResolveException($"There is no dependency of type {type}");
         }
     }
 }

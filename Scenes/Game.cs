@@ -1,12 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
-using destructive_code.LevelGeneration;
-using destructive_code.SceneLoader;
-using destructive_code.ServiceLocators;
+using DIedMoth.LevelGeneration;
+using DIedMoth.ServiceLocators;
+using DIedMoth.SceneLoader;
 using IndieInject;
 using UnityEngine;
 
-namespace destructive_code.Scenes
+namespace DIedMoth.Scenes
 {
     public static class Game
     {
@@ -23,7 +23,7 @@ namespace destructive_code.Scenes
 
         static Game()
         {
-            Tick();
+            //Tick();
         }
 
         public static void SwitchTo<TScene>(TScene scene)
@@ -32,11 +32,13 @@ namespace destructive_code.Scenes
             IsSceneLoaded = false;
             OnSceneStartedLoading?.Invoke(CurrentScene);
 
-            CurrentScene?.Dispose();
+            CurrentScene?.DisposeScene();
             CurrentScene = scene;
             
+            scene.InitModules();
+            scene.PrepareScene();
+            
             Injector.RegisterSceneDependencies(scene);
-            scene.BeforeSceneLoaded();
             
             Loader.LoadScene(scene.GetSceneName(), () => Complete(scene));
         }
@@ -46,7 +48,7 @@ namespace destructive_code.Scenes
         {
             Scene prevScene = CurrentScene;
 
-            scene.OnLoaded();
+            scene.LoadScene();
 
             IsSceneLoaded = true;
             OnSceneLoaded?.Invoke(prevScene, scene);
@@ -58,7 +60,7 @@ namespace destructive_code.Scenes
             {
                 if (CurrentScene != null && IsSceneLoaded)
                 {
-                    CurrentScene?.Tick();
+                    CurrentScene?.UpdateScene();
                     await UniTask.WaitForFixedUpdate();
                 }
 

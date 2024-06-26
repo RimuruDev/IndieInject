@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace destructive_code.LevelGeneration.GUIWindows
+namespace DIedMoth.LevelGeneration.GUIWindows
 {
     public sealed class SceneGUI
     {
