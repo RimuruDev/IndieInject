@@ -1,7 +1,7 @@
 using DIedMoth.Scenes;
 using UnityEngine;
 
-public class Startpoint : MonoBehaviour
+public class GameStartPoint : MonoBehaviour
 {
     void Start()
     {

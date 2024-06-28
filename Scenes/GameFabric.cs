@@ -5,12 +5,12 @@ using Object = UnityEngine.Object;
 
 namespace DIedMoth.Scenes
 {
-    public class DrankFabric
+    public class GameFabric
     {
         public event Action<Object> OnInstantiated;
         public event Action<Object> OnDestroyed;
-        public event Action<GameObject> OnInstantiatedGO;
-        public event Action<GameObject> OnDestroyedGO;
+        public event Action<GameObject> OnGameObjectInstantiated;
+        public event Action<GameObject> OnGameObjectDestroyed;
         
         public virtual TObject Instantiate<TObject>(TObject original, Vector3 position)
             where TObject : Object
@@ -40,13 +40,15 @@ namespace DIedMoth.Scenes
 
             if (instance is GameObject gameObject)
             {
-                OnInstantiatedGO?.Invoke(gameObject);
+                OnGameObjectInstantiated?.Invoke(gameObject);
             }
             else if (instance is Component component)
             {
-                OnInstantiatedGO?.Invoke(component.gameObject);
+                OnGameObjectInstantiated?.Invoke(component.gameObject);
             }
 
+            Game.Injector.Inject(instance);
+            
             return instance;
         }
 

@@ -5,7 +5,7 @@ namespace DIedMoth.Scenes
 {
     public abstract class Scene
     {
-        public virtual DrankFabric Fabric { get; private set; } = new();
+        public virtual GameFabric Fabric { get; private set; } = new();
         public SceneModulesManager Modules { get; private set; } 
         
         public abstract string GetSceneName();

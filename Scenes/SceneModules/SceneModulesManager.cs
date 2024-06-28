@@ -20,7 +20,6 @@ namespace DIedMoth.Scenes.SceneModules
             }
         }
         
-        
         public void StopModule<TModule>()
             where TModule : SceneModule
         {

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using DIedMoth.Scenes;
+using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace IndieInject
@@ -27,10 +28,10 @@ namespace IndieInject
         private DependenciesContainer sceneContainer;
 
         #region Registration
-        public void RegisterCoreDependencies(Startpoint startpoint)
+        public void RegisterCoreDependencies(GameStartPoint gameStartPoint)
         {
             var providers
-                = startpoint.GetComponentsInChildren<IDependencyProvider>();
+                = gameStartPoint.GetComponentsInChildren<IDependencyProvider>();
 
             Register(providers, coreContainer);
         }
@@ -60,17 +61,30 @@ namespace IndieInject
                         continue;
                     }
 
-                    Type dependencyType = method.ReturnType;
-                    
-                    bool isSingleton = ((ProvideAttribute) Attribute.GetCustomAttribute(method, typeof(ProvideAttribute))).IsSingleton;
-                    
-                    Func<object> fabric
-                        = (Func<object>)method.CreateDelegate(typeof(Func<object>), provider);
-                    
-                    var dependencyRegistration = new Dependency(dependencyType, fabric, isSingleton);
-
-                    container.Add(dependencyType, dependencyRegistration);
+                    RegisterDependency(method, provider);
                 }
+            }
+
+            void RegisterDependency(MethodInfo method, IDependencyProvider provider)
+            {
+                Type dependencyType = method.ReturnType;
+
+                bool isSingleton = ((ProvideAttribute) Attribute.GetCustomAttribute(method, typeof(ProvideAttribute))).IsSingleton;
+
+                Func<object> fabric
+                    = (Func<object>) method.CreateDelegate(typeof(Func<object>), provider);
+
+                var dependencyRegistration = new Dependency(dependencyType, fabric, isSingleton);
+
+                container.Add(dependencyType, dependencyRegistration);
+
+#if UNITY_EDITOR
+                if (method.ReturnType.IsSubclassOf(typeof(Component)) || method.ReturnType == typeof(GameObject))
+                {
+                    Debug.LogWarning("It's not recommended to store instances of GameObject or MonoBehaviour with DI." +
+                                     $" If you want to store prefabs, use special containers ({method.ReturnType} in {provider})");
+                }
+#endif
             }
         }
 

@@ -17,9 +17,15 @@ namespace IndieInject
     public class MonoProvider : MonoBehaviour, IDependencyProvider
     {
         [Provide(true)]
-        public List<Terrain> ProvidePersistentProgressService()
+        public MonoBehaviour ProvidePersistentProgressService()
         {
-            return new List<Terrain>();
+            return FindObjectOfType<MonoBehaviour>();
+        }
+        
+        [Provide(true)]
+        public NewBehaviourScript1.ColorT ColorTest()
+        {
+            return new NewBehaviourScript1.ColorT (Color.cyan);
         }
         
         [Provide(true)]
