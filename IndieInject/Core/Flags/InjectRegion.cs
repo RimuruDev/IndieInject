@@ -13,7 +13,7 @@ using System;
 namespace IndieInject
 {
     [Flags]
-    public enum InjectionType
+    public enum InjectRegion
     {
         Fields = 1,
         Properties = 2,

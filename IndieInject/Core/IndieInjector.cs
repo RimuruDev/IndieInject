@@ -96,7 +96,17 @@ namespace IndieInject
         {
             var type = toInject.GetType();
 
+            InjectRegion region = InjectRegion.All;
+            
+            var customAttribute = (InjectRegionAttribute)toInject.GetType().GetCustomAttribute(typeof(InjectRegionAttribute));
+            
+            if (customAttribute != null)
+            {
+                region = customAttribute.Region;
+            }
+            
             //methods
+            if((region & InjectRegion.Methods) == InjectRegion.Methods)
             {
                 var allMethods = type.GetMethods(BindingFlags);
 
@@ -121,6 +131,7 @@ namespace IndieInject
             }
             
             //fields
+            if((region & InjectRegion.Fields)  == InjectRegion.Fields)
             {
                 var allFields = type.GetFields(BindingFlags);
         
@@ -136,6 +147,7 @@ namespace IndieInject
             }
 
             //properties
+            if((region & InjectRegion.Properties)  == InjectRegion.Properties)
             {
                 var allProperties = type.GetProperties(BindingFlags);
         
