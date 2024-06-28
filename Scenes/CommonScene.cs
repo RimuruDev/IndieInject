@@ -17,7 +17,8 @@ namespace DIedMoth.Scenes
 
         protected override void SetupModules()
         {
-            Modules.AddModule(new SceneDependenciesModule(true, new TestSceneProvider()));    
+            Modules.AddModule(new SceneDependenciesModule(new TestSceneProvider()));    
+            Modules.AddModule(new SceneAutoInjectModule());    
         }
 
         protected override void OnSceneLoaded()

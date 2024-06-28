@@ -23,16 +23,16 @@ namespace IndieInject
             System.Reflection.BindingFlags.Public |
             System.Reflection.BindingFlags.NonPublic;
 
-        private readonly DependenciesContainer gameContainer = new();
+        private readonly DependenciesContainer coreContainer = new();
         private DependenciesContainer sceneContainer;
 
         #region Registration
-        public void RegisterGameDependencies(Startpoint startpoint)
+        public void RegisterCoreDependencies(Startpoint startpoint)
         {
             var providers
                 = startpoint.GetComponentsInChildren<IDependencyProvider>();
 
-            Register(providers, gameContainer);
+            Register(providers, coreContainer);
         }
         
         public void RegisterSceneDependencies(Scene scene)
@@ -63,8 +63,9 @@ namespace IndieInject
                     Type dependencyType = method.ReturnType;
                     
                     bool isSingleton = ((ProvideAttribute) Attribute.GetCustomAttribute(method, typeof(ProvideAttribute))).IsSingleton;
-
-                    Func<object> fabric = (Func<object>)Delegate.CreateDelegate(typeof(Func<object>), null, method);
+                    
+                    Func<object> fabric
+                        = (Func<object>)method.CreateDelegate(typeof(Func<object>), provider);
                     
                     var dependencyRegistration = new Dependency(dependencyType, fabric, isSingleton);
 
@@ -74,6 +75,8 @@ namespace IndieInject
         }
 
         #endregion
+
+        #region Inject
 
         public void Inject(object toInject)
         {
@@ -136,9 +139,9 @@ namespace IndieInject
 
         private Dependency Find(Type type)
         {
-            if (gameContainer.Get(type) != null)
+            if (coreContainer.Get(type) != null)
             {
-                return gameContainer.Get(type);
+                return coreContainer.Get(type);
             }
             if (sceneContainer.Get(type) != null)
             {
@@ -147,5 +150,7 @@ namespace IndieInject
 
             throw new IndieResolveException($"There is no dependency of type {type}");
         }
+
+        #endregion
     }
 }

@@ -6,11 +6,18 @@ namespace IndieInject
 {
     public class TestSceneProvider : IDependencyProvider
     {
+        private double test;
+
+        public TestSceneProvider()
+        {
+            test = UnityEngine.Random.Range(0, 10);
+        }
+
         [Provide(false)]
         private List<double> ProvideTest1()
         {
-            var list = new List<double>();
-            list.Add(UnityEngine.Random.Range(0, 10));
+            var list = new List<double> {test};
+            
             return list;
         }
         
