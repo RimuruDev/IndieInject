@@ -1,6 +1,6 @@
 using System;
 
-namespace DIedMoth.ExtensionSystem
+namespace MothDIed.ExtensionSystem
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class DisallowMultipleExtensionsAttribute : Attribute

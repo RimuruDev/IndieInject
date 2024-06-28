@@ -11,13 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DIedMoth.Scenes;
+using MothDIed.Scenes;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 namespace IndieInject
 {
-    public class IndieInjector
+    public sealed class IndieInjector
     {
         private const BindingFlags BindingFlags =
             System.Reflection.BindingFlags.Instance |

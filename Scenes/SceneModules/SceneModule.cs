@@ -1,4 +1,4 @@
-﻿namespace DIedMoth.Scenes.SceneModules
+﻿namespace MothDIed.Scenes.SceneModules
 {
     public abstract class SceneModule
     {

@@ -1,10 +1,10 @@
-using DIedMoth.LevelGeneration.GUIWindows;
-using DIedMoth.Scenes;
+using MothDIed.LevelGeneration.GUIWindows;
+using MothDIed.Scenes;
 
 public sealed class ReturnToPreviousButton : GUIWindow
 {
     public void ReturnToPrevious()
     {
-        //Game.CurrentScene.SceneGUI.BackToPrevious();
+        //TODO: ADD GUI MODULE
     }
 }

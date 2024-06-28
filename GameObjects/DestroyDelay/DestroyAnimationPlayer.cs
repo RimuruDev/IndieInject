@@ -1,33 +1,33 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace DIedMoth.GameObjects
+namespace MothDIed.GameObjects
 {
     [DisallowMultipleComponent]
     public sealed class DestroyAnimationPlayer : DestroyDelay
     {
-        [SerializeField] private AnimationClip animation;
+        [SerializeField] private AnimationClip destroyAnimation;
         [SerializeField] private Animator animator;
         
         private void Reset()
         {
-            if (TryGetComponent(out Animator animatorOnGO))
+            if (TryGetComponent(out Animator animator))
             {
-                this.animator = animatorOnGO;
+                this.animator = animator;
             }
             else
             {
-                animator = GetComponentInChildren<Animator>();    
+                this.animator = GetComponentInChildren<Animator>();    
             }
         }
     
         public override async UniTask Destroy()
         {
-            var animationParsed = Animator.StringToHash(animation.name);
+            var animationParsed = Animator.StringToHash(destroyAnimation.name);
             
             animator.Play(animationParsed);
             
-            await UniTask.WaitForSeconds(animation.length);
+            await UniTask.WaitForSeconds(destroyAnimation.length);
         }
     }
 }

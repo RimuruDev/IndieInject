@@ -1,6 +1,6 @@
-﻿using DIedMoth.ServiceLocators;
+﻿using MothDIed.ServiceLocators;
 
-namespace DIedMoth.Scenes.SceneModules
+namespace MothDIed.Scenes.SceneModules
 {
     public sealed class SceneModulesManager
     {

@@ -1,8 +1,8 @@
-using DIedMoth.ExtensionSystem;
-using DIedMoth.ServiceLocators;
+using MothDIed.ExtensionSystem;
+using MothDIed.ServiceLocators;
 using UnityEngine;
 
-namespace DIedMoth
+namespace MothDIed
 {
     public abstract class DepressedBehaviour : MonoBehaviour
     {

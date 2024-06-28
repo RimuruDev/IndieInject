@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DIedMoth.ServiceLocators
+namespace MothDIed.ServiceLocators
 {
     public class ServiceLocator<TServiceBase>
         where TServiceBase : class

@@ -1,6 +1,6 @@
-namespace DIedMoth.LevelGeneration.GameStates
+namespace MothDIed.LevelGeneration.GameStates
 {
-    public abstract class GameState
+    public abstract class GameStateData
     {
         public virtual void OnSceneLoaded() {}
         public virtual void Enter() {}

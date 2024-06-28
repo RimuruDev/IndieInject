@@ -1,9 +1,9 @@
 using System;
-using DIedMoth.GameObjects;
+using MothDIed.GameObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace DIedMoth.Scenes
+namespace MothDIed.Scenes
 {
     public class GameFabric
     {

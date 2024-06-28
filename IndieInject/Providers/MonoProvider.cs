@@ -8,30 +8,12 @@
 //
 // **************************************************************** //
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace IndieInject
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
-    public class MonoProvider : MonoBehaviour, IDependencyProvider
+    public abstract class MonoProvider : MonoBehaviour, IDependencyProvider
     {
-        [Provide(true)]
-        public MonoBehaviour ProvidePersistentProgressService()
-        {
-            return FindObjectOfType<MonoBehaviour>();
-        }
-        
-        [Provide(true)]
-        public NewBehaviourScript1.ColorT ColorTest()
-        {
-            return new NewBehaviourScript1.ColorT (Color.cyan);
-        }
-        
-        [Provide(true)]
-        public List<string> Test()
-        {
-            return new List<string>();
-        }
     }
 }

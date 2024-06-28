@@ -1,7 +1,7 @@
-using DIedMoth.Scenes.SceneModules;
+using MothDIed.Scenes.SceneModules;
 using UnityEngine;
 
-namespace DIedMoth.Scenes
+namespace MothDIed.Scenes
 {
     public abstract class Scene
     {

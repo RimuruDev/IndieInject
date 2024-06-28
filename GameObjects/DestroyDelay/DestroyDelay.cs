@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace DIedMoth.GameObjects
+namespace MothDIed.GameObjects
 {
     public abstract class DestroyDelay : MonoBehaviour
     {

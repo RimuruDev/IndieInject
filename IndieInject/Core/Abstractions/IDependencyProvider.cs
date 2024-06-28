@@ -10,7 +10,5 @@
 
 namespace IndieInject
 {
-    public interface IDependencyProvider
-    {
-    }
+    public interface IDependencyProvider { }
 }

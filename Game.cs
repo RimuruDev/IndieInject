@@ -1,10 +1,10 @@
 using Cysharp.Threading.Tasks;
-using DIedMoth.SceneLoader;
 using IndieInject;
 using UnityEngine;
 using System;
+using MothDIed.SceneLoader;
 
-namespace DIedMoth.Scenes
+namespace MothDIed.Scenes
 {
     public static class Game
     {

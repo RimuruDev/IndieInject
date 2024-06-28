@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace DIedMoth.LevelGeneration.GUIWindows
+namespace MothDIed.LevelGeneration.GUIWindows
 {
     public abstract class GUILayer : MonoBehaviour
     {

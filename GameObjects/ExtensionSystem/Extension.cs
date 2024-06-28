@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DIedMoth.ExtensionSystem
+namespace MothDIed.ExtensionSystem
 {
     public abstract class Extension : IDisposable
     {

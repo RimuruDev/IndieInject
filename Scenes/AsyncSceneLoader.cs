@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.SceneManagement;
 
-namespace DIedMoth.SceneLoader
+namespace MothDIed.SceneLoader
 {
     public sealed class AsyncSceneLoader
     {

@@ -1,4 +1,4 @@
-﻿using DIedMoth.Scenes.SceneModules;
+﻿using MothDIed.Scenes.SceneModules;
 
 namespace IndieInject
 {

@@ -1,4 +1,4 @@
-using DIedMoth.Scenes;
+using MothDIed.Scenes;
 using UnityEngine;
 
 public class GameStartPoint : MonoBehaviour

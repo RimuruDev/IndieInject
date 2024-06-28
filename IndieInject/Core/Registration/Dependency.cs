@@ -5,15 +5,15 @@ namespace IndieInject
     public sealed class Dependency
     {
         public readonly Type Type;
-        public readonly Func<object> Fabric;
         public readonly bool IsSingleton;
-
+        
+        private readonly Func<object> fabric;
         private object instance;
 
         public Dependency(Type type, Func<object> fabric, bool isSingleton)
         {
             Type = type;
-            Fabric = fabric;
+            this.fabric = fabric;
             IsSingleton = isSingleton;
         }
 
@@ -21,14 +21,14 @@ namespace IndieInject
         {
             if (IsSingleton && instance == null)
             {
-                instance = Fabric.Invoke();
+                instance = fabric.Invoke();
             }
             else if (IsSingleton)
             {
                 return instance;
             }
 
-            return Fabric.Invoke();
+            return fabric.Invoke();
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using DIedMoth.Scenes;
-using DIedMoth.Scenes.SceneModules;
+﻿using MothDIed.Scenes;
+using MothDIed.Scenes.SceneModules;
 using UnityEngine;
 
 namespace IndieInject

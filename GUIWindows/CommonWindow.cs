@@ -1,4 +1,4 @@
-namespace DIedMoth.LevelGeneration.GUIWindows
+namespace MothDIed.LevelGeneration.GUIWindows
 {
     public sealed class CommonWindow : GUIWindow
     {

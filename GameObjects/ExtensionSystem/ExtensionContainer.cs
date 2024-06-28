@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DIedMoth.ExtensionSystem
+namespace MothDIed.ExtensionSystem
 {
     public sealed class ExtensionContainer
     {
@@ -12,14 +12,6 @@ namespace DIedMoth.ExtensionSystem
 
         private bool containerStarted;
 
-        ~ExtensionContainer()
-        {
-            foreach (var extension in extensions)
-            {
-                extension.Value.ForEach(extension => extension.Dispose());
-            }
-        }
-        
         public void StartContainer(DepressedBehaviour owner, params Extension[] extensions)
         {
             this.owner = owner;
@@ -36,6 +28,16 @@ namespace DIedMoth.ExtensionSystem
                 extension.Value.ForEach((extension) => extension.StartExtension());
             }
         }
+
+        ~ExtensionContainer()
+        {
+            foreach (var extension in extensions)
+            {
+                extension.Value.ForEach(extension => extension.Dispose());
+            }
+        }
+
+        #region Checks
 
         public TExtension GetExtension<TExtension>()
             where TExtension : Extension
@@ -54,7 +56,11 @@ namespace DIedMoth.ExtensionSystem
         {
             return extensions.ContainsKey(typeof(TExtension));
         }
-        
+
+        #endregion
+
+        #region Extensions Managment
+
         public void AddExtension(Extension extension)
         {
             extension.Initialize(owner);
@@ -114,35 +120,39 @@ namespace DIedMoth.ExtensionSystem
             }
         }
 
-        
-        //callbacks from owner
+        #endregion
+
+        #region Event Methods For Extensions
+
         public void EnableContainer()
         {
-            foreach (var extension in extensions)
+            foreach (var extensionPair in extensions)
             {
-                extension.Value.ForEach(extension => extension.Enable());
+                extensionPair.Value.ForEach(extension => extension.Enable());
             }
         }
         public void DisableContainer()
         {
-            foreach (var extension in extensions)
+            foreach (var extensionPair in extensions)
             {
-                extension.Value.ForEach(extension => extension.Disable());
+                extensionPair.Value.ForEach(extension => extension.Disable());
             }
         }
         public void UpdateContainer()
         {
-            foreach (var extension in extensions)
+            foreach (var extensionPair in extensions)
             {
-                extension.Value.ForEach(extension => extension.Update());
+                extensionPair.Value.ForEach(extension => extension.Update());
             }
         }
         public void FixedUpdateContainer()
         {
-            foreach (var extension in extensions)
+            foreach (var extensionPair in extensions)
             {
-                extension.Value.ForEach(extension => extension.FixedUpdate());
+                extensionPair.Value.ForEach(extension => extension.FixedUpdate());
             }
         }
+
+        #endregion
     }
 }
