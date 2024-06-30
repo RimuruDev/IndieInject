@@ -96,6 +96,10 @@ namespace IndieInject
         {
             var type = toInject.GetType();
 
+            //if it is gameobject so we need to inject in all his components not in it
+            if (TryInjectInGameObject(toInject)) 
+                return;
+
             InjectRegion region = InjectRegion.All;
             
             var customAttribute = (InjectRegionAttribute)toInject.GetType().GetCustomAttribute(typeof(InjectRegionAttribute));
@@ -131,7 +135,7 @@ namespace IndieInject
             }
             
             //fields
-            if((region & InjectRegion.Fields)  == InjectRegion.Fields)
+            if((region & InjectRegion.Fields) == InjectRegion.Fields)
             {
                 var allFields = type.GetFields(BindingFlags);
         
@@ -147,7 +151,7 @@ namespace IndieInject
             }
 
             //properties
-            if((region & InjectRegion.Properties)  == InjectRegion.Properties)
+            if((region & InjectRegion.Properties) == InjectRegion.Properties)
             {
                 var allProperties = type.GetProperties(BindingFlags);
         
@@ -161,6 +165,23 @@ namespace IndieInject
                     }
                 }
             }
+        }
+
+        private bool TryInjectInGameObject(object toInject)
+        {
+            if (toInject is GameObject gameObject)
+            {
+                var allMonoBehaviours = gameObject.GetComponentsInChildren<MonoBehaviour>(true);
+
+                foreach (var monoBehaviour in allMonoBehaviours)
+                {
+                    Inject(monoBehaviour);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private Dependency Find(Type type)

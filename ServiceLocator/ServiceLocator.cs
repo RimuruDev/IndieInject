@@ -18,7 +18,9 @@ namespace MothDIed.ServiceLocators
         public bool TryGet<TService>(out TService serviceEnquire)
             where TService : class, TServiceBase
         {
-            serviceEnquire = services[typeof(TService)] as TService;
+            services.TryGetValue(typeof(TService), out var outService);
+            serviceEnquire = outService as TService;
+
             return serviceEnquire != null;
         }
 

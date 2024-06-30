@@ -1,4 +1,5 @@
 using MothDIed.Scenes;
+using Sample;
 using UnityEngine;
 
 public class GameStartPoint : MonoBehaviour
@@ -7,6 +8,6 @@ public class GameStartPoint : MonoBehaviour
     {
         Game.Injector.RegisterCoreDependencies(this);
         
-        Game.SwitchTo(new CommonScene());
+        Game.SwitchTo(new MainMenuScene());
     }
 }

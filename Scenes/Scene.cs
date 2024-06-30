@@ -10,7 +10,8 @@ namespace MothDIed.Scenes
         
         public abstract string GetSceneName();
         
-        public abstract Camera GetCamera();
+        public virtual Camera GetCamera()
+            => Camera.current;
 
         public void InitModules()
         {
