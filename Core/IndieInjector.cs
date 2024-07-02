@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // ReSharper disable once CheckNamespace
 namespace IndieInject
@@ -31,6 +32,17 @@ namespace IndieInject
 
         private readonly DependenciesContainer coreContainer = new();
         private DependenciesContainer sceneContainer;
+
+        public IndieInjector()
+        {
+            SceneManager.sceneUnloaded += ClearSceneDependenciesContainer;
+        }
+
+        private void ClearSceneDependenciesContainer(Scene _)
+        {
+            sceneContainer.Dispose();
+            sceneContainer = null;
+        }
 
         #region Registration
         public void RegisterDependenciesToCore(Transform root)

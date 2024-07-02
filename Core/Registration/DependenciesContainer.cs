@@ -12,15 +12,23 @@ using UnityEngine;
 
 namespace IndieInject
 {
-    public sealed class DependenciesContainer
+    public sealed class DependenciesContainer : IDisposable
     {
         private readonly Dictionary<Type, Dependency> dependencies = new ();
+
+        public void Dispose()
+        {
+            foreach (var dependencyPair in dependencies)
+            {
+                dependencyPair.Value.Dispose();
+            }
+        }
 
         public Dependency Get<TDependency>()
         {
             return dependencies[typeof(TDependency)];
         }
-        
+
         public Dependency Get(Type type)
         {
             if (dependencies.TryGetValue(type, out var dependency))
@@ -30,7 +38,7 @@ namespace IndieInject
 
             return null;
         }
-        
+
         public void Add(Type dependencyType, Dependency dependency)
         {
             if (!dependencies.TryAdd(dependencyType, dependency))
