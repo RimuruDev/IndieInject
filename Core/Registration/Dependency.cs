@@ -10,7 +10,7 @@ using System;
 
 namespace IndieInject
 {
-    public sealed class Dependency
+    public sealed class Dependency : IDisposable
     {
         public readonly Type Type;
         public readonly bool IsSingleton;
@@ -23,6 +23,14 @@ namespace IndieInject
             Type = type;
             this.fabric = fabric;
             IsSingleton = isSingleton;
+        }
+
+        public void Dispose()
+        {
+            if (IsSingleton && instance is IDisposable disposable)
+            {
+                disposable.Dispose();   
+            }
         }
 
         public object GetInstance()
