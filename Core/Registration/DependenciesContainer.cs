@@ -54,5 +54,16 @@ namespace IndieInject
             if (dependencies.ContainsKey(typeof(TDependency)))
                 dependencies.Remove(typeof(TDependency));
         }
+
+        public void SetupSingletons()
+        {
+            foreach (var dependencyPair in dependencies)
+            {
+                if (dependencyPair.Value.IsSingleton)
+                {
+                    Indie.Injector.Inject(dependencyPair.Value.GetInstance());
+                }
+            }
+        }
     }
 }

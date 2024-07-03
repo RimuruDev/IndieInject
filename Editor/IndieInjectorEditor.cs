@@ -58,7 +58,7 @@ namespace IndieInjectSample
             }
         }
         
-        [MenuItem("IndieInject/Setup StartPoint")]
+        [MenuItem("IndieInject/Setup Entry Point")]
         public static void SetupCoreRoot()
         {
             if (Object.FindObjectOfType<SceneDependenciesRoot>() == null)

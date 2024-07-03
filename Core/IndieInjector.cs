@@ -20,7 +20,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// ReSharper disable once CheckNamespace
 namespace IndieInject
 {
     public sealed class IndieInjector
@@ -40,25 +39,25 @@ namespace IndieInject
 
         private void ClearSceneDependenciesContainer(Scene _)
         {
-            sceneContainer.Dispose();
+            sceneContainer?.Dispose();
             sceneContainer = null;
         }
 
         #region Registration
-        public void RegisterDependenciesToCore(Transform root)
+        public void RegisterDependenciesToCore(CoreDependenciesRoot root)
         {
             var providers
-                = root.GetComponentsInChildren<IDependenciesProvider>();
+                = root.transform.GetComponentsInChildren<IDependenciesProvider>();
 
             Register(providers, coreContainer);
         }
         
-        public void RegisterSceneDependencies(Transform root)
+        public void RegisterSceneDependencies(SceneDependenciesRoot root)
         {
             sceneContainer = new DependenciesContainer();
             
             var providers
-                = root.GetComponentsInChildren<IDependenciesProvider>();
+                = root.transform.GetComponentsInChildren<IDependenciesProvider>();
 
             Register(providers, sceneContainer);
         }
@@ -101,6 +100,8 @@ namespace IndieInject
                 }
 #endif
             }
+            
+            container.SetupSingletons();
         }
 
         #endregion

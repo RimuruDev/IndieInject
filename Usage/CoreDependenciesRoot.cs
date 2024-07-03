@@ -14,7 +14,7 @@ namespace IndieInject
     {
         private void Awake()
         {
-            Indie.Injector.RegisterDependenciesToCore(transform);
+            Indie.Injector.RegisterDependenciesToCore(this);
         }
     }
 }

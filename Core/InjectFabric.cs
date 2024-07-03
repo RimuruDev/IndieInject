@@ -14,11 +14,8 @@ namespace IndieInject
 {
     public sealed class InjectFabric
     {
-        public event System.Action<Object> OnInstantiated;
-        public event System.Action<Object> OnDestroyed;
-        
+        public event Action<Object> OnInstantiated;
         public event Action<GameObject> OnGameObjectInstantiated;
-        public event Action<GameObject> OnGameObjectDestroyed;
 
         public TObject Instantiate<TObject>(TObject original, Vector3 position)
             where TObject : Object
@@ -51,10 +48,10 @@ namespace IndieInject
         {
             var instance = Object.Instantiate(original, position, rotation, parent);
             
+            Indie.Injector.Inject(instance);
+
             OnInstantiated?.Invoke(instance);
             InvokeGameObjectEventsIfGameObject();
-
-            Indie.Injector.Inject(instance);
             
             return instance;
 
@@ -69,18 +66,6 @@ namespace IndieInject
                     OnGameObjectInstantiated?.Invoke(component.gameObject);
                 }
             }
-        }
-
-        public void Destroy(Object toDestroy)
-        {
-            OnDestroyed?.Invoke(toDestroy);
-            
-            if(toDestroy is GameObject gameObject)
-            {
-                OnGameObjectDestroyed?.Invoke(gameObject);
-            }
-            
-            Object.Destroy(toDestroy);
         }
     }
 }
