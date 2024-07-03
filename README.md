@@ -135,4 +135,4 @@ public sealed class HeroDataProvider : MonoProvider
     private void OnValidate() { /*getting data from resources*/ }
 }
 ```
-Чтобы быстро быстро создать SceneDependenciesRoot воспользуемся кнопкой Setup Scene в меню IndieInject. Добавим дочерний объект с компонентом HeroDataProvider и все!
+Чтобы быстро создать SceneDependenciesRoot воспользуемся кнопкой Setup Scene в меню IndieInject. Добавим дочерний объект с компонентом HeroDataProvider и все!
