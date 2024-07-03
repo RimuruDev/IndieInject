@@ -1,174 +1,138 @@
-# IndieInject
+# Описание
 
-IndieInject — это легковесный и простой в использовании фреймворк для внедрения зависимостей (DI) в Unity, разработанный специально для небольших проектов и быстрых прототипов. Этот фреймворк идеально подходит для создания игр для платформ, таких как Yandex Games, Poki, Crazy Games, Google Play, Apple Store и Ru Store.
+IndieInject - легковесный DI фреймворк, который может спокойно использоваться в прототипах и в крупных проектах, благодаря тому, что его легко можно адаптировать под любую архитектуру.
 
-## Описание
+# Возможности
 
-IndieInject предоставляет базовые возможности для внедрения зависимостей в поля, свойства и методы, а также поддерживает инъекцию зависимостей при спавне объектов. Он разработан для использования в Unity и заточен под быструю разработку и расширяемость, что делает его идеальным выбором для небольших проектов и веб-игр.
+- Core зависимости и Scene зависимости
+- Инъекция при помощи рефлексии в методы, поля, свойства 
+- Регистрация зависимостей посредством создания фабрик из методов, которые отмечены Provide атрибутом
+- Singleton и Transient типы регистрации
+- Опциональная автоматическая инъекция в начальные объекты на сцене
+- Создание объектов с автоматической инъекцией, если создавать объекты через Indie.Fabric.Instantiate
 
-## Возможности
+# Логика
 
-- **Простота и легковесность:** Легко интегрируется и минимально влияет на производительность.
-- **Базовое внедрение зависимостей:** Инъекция в поля, свойства и методы с помощью атрибута `[Inject]`.
-- **Поддержка спавна объектов:** Внедрение зависимостей при создании объектов с помощью метода `InstantiateWithDependencies`.
-- **Легкая интеграция с Unity:** Использование `MonoBehaviour` для управления жизненным циклом и зависимостями объектов.
+### Хранение
+Зависимости **хранятся** в двух контейнерах: для Core зависимостей, которые будут существовать весь жизненный цикл игры и для сцен, которые очищаются сразу после отгрузки сцены.
+### Регистрация
+**Регистрация** зависимостей происходит путем создания фабрик из методов в провайдере, которые обозначены атрибутом [Provide].
+### Типы выдачи
+Есть два **типа выдачи** зависимости: Singleton и Transient. Первый будет создавать зависимость при ее регистрации и выдавать всегда именно этот экземпляр. Второй будет создавать при каждой инъекции новый экземпляр.
+### Инъекция
+**Инъецкция** реализована при помощи рефлексии. Можно делать инъекцию в поля, свойства, методы, которые обозначены атрибутом Inject.
+### Как инициализируются зависимости
+После того, как происходит регистрация всех зависимостей из провайдеров, то идет инициалиация синглтонов и их инъекция. В Transient зависимости инъекция происходит, когда новый экземпляр создан.
 
-## Установка
+# API
 
-1. Склонируйте репозиторий и добавьте папку IndieInject в ваш проект Unity.
+- IDependencyProvider - интерфейс, по которому передаются провайдеры для регистрации
+- [Provide(bool isSingleton)] - атрибут, который отображает, какой метод будет использован для регистрации, как фабрика зависимости
+- MonoProvider - MonoBehavior, который отнаследован от IDependecyProvider. Его можно использовать для всех провайдеров
+- Core/Scene Dependencies Root - они запускают регестрацию зависимостей. Все провайдеры должны быть расположены или как дочерние объекты для Root-а, либо на них
+- SceneAutoInjector - если находится на сцене, то будет сделана инъекция, во все находящиеся на сцене объекты
+- Indie.Injector.Inject() - инъекция в объект
+- Indie.Fabric.Instantiate() - аналог Object.Instantiate, но с автоматической инъекцией
+- Indie.Fabric.OnInstantiated - событие, которое вызывается при созднии объекта
+- Indie.Fabric.OnGameObjectInstantiated - событие, которое вызывается при созднии GameObject
+- [Inject] - показывает, в какой метод, поле, свойство нужно сделать инъекцию
+- [InjectRegion(InjectRegion region)] - атрибут, который добавляется к классу для того, чтобы показать, в какую область нужно делать инъекцию. Если атрибута нет, то будет инъекция во все
 
-```sh
-git clone https://github.com/RimuruDev/IndieInject.git
+# Как пользоваться
+
+Рассмотрим, как можно использовать Indie Inject на примере, который приведен в папке Sample. Его можно скачать отдельно в релизах
+
+Задачи:
+- Регистрация InputService-а, как Core зависимость
+- Регистрация префаба игрока, его рутового объекта, его конфига для конкретной сцены
+- Инъкция в фабрику, которая изначально находится на сцене
+```cs
+[Inject] private GameObject playerPrefab;
+private Transform rootTransform;
+        
+[Inject]
+private void Constructor(Transform rootTransformForSpawnHero)
+{
+    rootTransform = rootTransformForSpawnHero;
+}
 ```
-2. Или скачайте последний [Release](https://github.com/RimuruDev/IndieInject/releases) и перенесите файл `.package` в ваш проект Unity.
+- Создание игрока через фабрику и его инъекция
+```cs
+[Inject] private InputService InputService { get; set; }
+[Inject] private HeroConfig HeroConfig { get; set; }
+```
 
-<img width="200" alt="image" src="https://github.com/RimuruDev/IndieInject/assets/85500556/7ff69f43-705a-4d0e-a640-6d8e331df6a0">
+Для начала, нам нужно создать Entry Point для примера. Создадим новую сцену и назовем ее, например, StartPoint. Теперь нам нужно создать Dependency Root для Core зависимостей. Для автоматизации их создания мы сделали специальное меню, которое называется IndieInject. Там нужно нажать Create Entry Point. Мы хотим регистрировать InputService, поэтому создадим класс InputServiceProvider и отнаследуемся от MonoProvider-а.
 
-## Примеры использования
-В этом примере: инекция конфига + героя + transform родителя для героя.
+```cs
+public class InputServiceProvider : MonoProvider
+{
+    [Provide(true)]
+    public InputService ProvideInputService() => new();
+}
+```
 
----
-!!!! Подробнее лучше ознакомиться в `Sample.package` закрепленным к [Release](https://github.com/RimuruDev/IndieInject/releases). 
+В этом классе мы объвляем метод ProvideInputService(), который возвращает просто новый экземпляр InputService, чтобы этот метод был использован как фабрика, мы его обозначили атрибутом [Provide] и указали, что это синглтон. Добавим этот компонент на CoreDependenciesRoot, настройка Entry Point завершена. Теперь нам нужно сделать автоматический переход в SampeScene.
 
-Откройте папку Samples далее папка _Scenes сцена SampleScene.unity
+Рассмотрим устройство фабрики игрока:
+```cs
+public class HeroFactory : MonoBehaviour
+{
+    // === Inject in field === //
+    [Inject] private GameObject playerPrefab;
+    private Transform rootTransform;
 
----
+    // === Inject in method === //
+    [Inject]
+    private void Constructor(Transform rootTransformForSpawnHero)
+    {
+        rootTransform = rootTransformForSpawnHero;
+    }
 
-![IndieInject-Log](https://github.com/RimuruDev/IndieInject/assets/85500556/d961a5d2-443c-4bb1-b4e0-6ac5da263aba)
+    private void Start()
+    {
+        // === Instantiate + Inject in new GameObject === //
+        Indie.Fabric.Instantiate(playerPrefab, rootTransform);
+    }
+}
+```
 
+В ней мы должны получить префаб игрока и родительского контейнера. На старте мы создаем игрока через Indie.Fabric.Instantiate()
 
-### 1. Настройка `SceneContext`
+Рассмотрим игрока:
+```cs
+public class Hero : MonoBehaviour
+{
+    // === Inject in properties === //
+    [Inject] private InputService InputService { get; set; }
+    [Inject] private HeroConfig HeroConfig { get; set; }
 
-Создайте `SceneContext` для регистрации зависимостей:
+    private Rigidbody heroRigidbody;
 
-```csharp
-using UnityEngine;
+    private void Awake() => heroRigidbody = GetComponent<Rigidbody>();
 
-public sealed class SceneContext : MonoBehaviour, IDependencyProvider
+    private void Update() { /*movement*/ }
+}
+```
+В нем нам нужно получать InputService и HeroConfig. InputService мы уже зарегестрировали как Core зависимость. Теперь осталось зарегистрировать оставшиеся.
+
+```cs
+public sealed class HeroDataProvider : MonoProvider
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform rootTransformForHero;
     [SerializeField] private HeroConfig heroConfig;
 
-    [Provide]
+    [Provide(true)]
     public GameObject ProvidePlayerPrefab() => playerPrefab;
 
-    [Provide]
-    public InputService ProvideInputService() => new();
-
-    [Provide]
+    [Provide(true)]
     public HeroConfig ProvidePlayerConfig() => heroConfig;
 
-    [Provide]
+    [Provide(true)]
     public Transform RootTransformForHero() => rootTransformForHero;
+    
+    private void OnValidate() { /*getting data from resources*/ }
 }
 ```
-
-### 2. Пример с героем и управлением
-
-#### InputService
-
-```csharp
-using UnityEngine;
-
-public class InputService
-{
-    private const string Horizontal = "Horizontal";
-    private const string Vertical = "Vertical";
-    
-    public static Vector3 GetInput()
-    {
-        var horizontal = Input.GetAxis(Horizontal);
-        var vertical = Input.GetAxis(Vertical);
-      
-        return new Vector3(horizontal, 0, vertical);
-    }
-}
-```
-
-#### HeroConfig
-
-```csharp
-using UnityEngine;
-
-[CreateAssetMenu(fileName = nameof(HeroConfig), menuName = "Config/" + nameof(HeroConfig))]
-public class HeroConfig : ScriptableObject
-{
-    [field: SerializeField] public float MoveSpeed { get; private set; } = 50f;
-}
-```
-
-#### Hero
-
-```csharp
-using UnityEngine;
-
-public class Hero : MonoBehaviour
-{
-    [Inject] private InputService inputService;
-    [Inject] private HeroConfig HeroConfig;
-    
-    private Rigidbody heroRigidbody;
-    
-    private void Awake() =>
-        heroRigidbody = GetComponent<Rigidbody>();
-    
-    private void Update()
-    {
-        var input = InputService.GetInput();
-        var movement = input * (HeroConfig.MoveSpeed * Time.deltaTime);
-      
-        heroRigidbody.MovePosition(transform.position + movement);
-    }
-}
-```
-
-#### HeroFactory
-
-```csharp
-using UnityEngine;
-
-public class HeroFactory : MonoBehaviour
-{
-    // Inject in field!
-    [Inject] private GameObject playerPrefab;
-    
-    private Transform rootTransform;
-    
-    // Inject in method!
-    [Inject]
-    private void Constructor(Transform rootTransformForSpawnHero) =>
-        rootTransform = rootTransformForSpawnHero;
-    
-    private void Start() =>
-        IndieObject.InstantiateWithDependencies(playerPrefab, rootTransform);
-}
-```
-
-### 3. Интеграция с Unity Editor
-
-#### Создание и удаление IndieInjector через меню редактора
-
-Вы можете создать или удалить объект с компонентом `IndieInjector` через меню Unity:
-
-<img width="200" alt="image" src="https://github.com/RimuruDev/IndieInject/assets/85500556/7ff69f43-705a-4d0e-a640-6d8e331df6a0">
-
-### Лицензия
-
-Этот проект лицензирован по лицензии MIT. Подробнее см. в файле [LICENSE](LICENSE).
-
----
-
-Разработано RimuruDev
-
----
-
-## TODO:
-- Добавить Project Context
-- Добавить WeakReference
-- Написать Readme.md
-- Добавить пример с CompositionRoot
-- Добавить примеры с раздилением провайдеров на контексты
-- Добавить ImmortalGameObject
-- Добавить более надежный способ удаления зависимостей
-- Покрыть тестами
+Чтобы быстро быстро создать SceneDependenciesRoot воспользуемся кнопкой Setup Scene в меню IndieInject. Добавим дочерний объект с компонентом HeroDataProvider и все!
