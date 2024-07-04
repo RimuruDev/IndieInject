@@ -59,6 +59,11 @@ namespace IndieInject
             var providers
                 = root.transform.GetComponentsInChildren<IDependenciesProvider>();
 
+            foreach (var provider in providers)
+            {
+                Indie.Injector.Inject(provider);
+            }
+            
             Register(providers, sceneContainer);
         }
 
