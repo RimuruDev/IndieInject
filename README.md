@@ -2,6 +2,13 @@
 
 IndieInject - легковесный DI фреймворк, который может спокойно использоваться в прототипах и в крупных проектах, благодаря тому, что его легко можно адаптировать под любую архитектуру.
 
+# Установка
+1. Откройте Unity и перейдите в окно **Package Manager**: **Window** > **Package Manager**.
+2. Нажмите на кнопку `+` в левом верхнем углу окна Package Manager и выберите **Add package from git URL...**.
+3. Введите URL репозитория: `https://github.com/RimuruDev/IndieInject-Installer.git` и нажмите **Add**.
+4. Unity автоматически скачает и установит пакет IndieInject Installer.
+5. Если непонятно как пользоваться установщитам: [короткая документация](https://github.com/RimuruDev/IndieInject-Installer/blob/main/README.md).
+
 # Возможности
 
 - Core зависимости и Scene зависимости
