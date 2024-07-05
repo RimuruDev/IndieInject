@@ -18,6 +18,7 @@ using UnityEngine;
 
 namespace IndieInject
 {
+    [DefaultExecutionOrder(-999)]
     public sealed class CoreDependenciesRoot : MonoBehaviour
     {
         private void Awake()

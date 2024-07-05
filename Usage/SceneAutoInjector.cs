@@ -18,6 +18,7 @@ using UnityEngine;
 
 namespace IndieInject
 {
+    [DefaultExecutionOrder(-300)]
     public sealed class SceneAutoInjector : MonoBehaviour
     {
         private void Awake()
