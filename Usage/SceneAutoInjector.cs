@@ -12,7 +12,7 @@ namespace IndieInject
 {
     public sealed class SceneAutoInjector : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             var all = FindObjectsOfType<MonoBehaviour>(true);
 
