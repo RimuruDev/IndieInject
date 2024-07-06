@@ -26,6 +26,12 @@ namespace IndieInjectSample
         private const string RootName = "[ === Dependencies Root === ]";
         private const string AutoInjectorName = "[ === Auto Injector === ]";
 
+        [InitializeOnLoadMethod]
+        private static void OnProjectLoadedInEditor()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
         [MenuItem("IndieInject/Setup Scene")]
         public static void SetupSceneRoot()
         {
@@ -44,26 +50,35 @@ namespace IndieInjectSample
                 Debug.LogWarning($"An {RootName} already exists in the scene. Only one instance is allowed.");
             }
         }
-        
+
         [MenuItem("IndieInject/Setup Scene Auto Inject")]
         public static void SetupSceneAutoInject()
         {
-            if (Object.FindObjectOfType<SceneDependenciesRoot>())
+            if (Object.FindObjectOfType<SceneDependenciesRoot>(true))
             {
-                var injectorObject = new GameObject(AutoInjectorName);
+                var autoInject = Object.FindObjectOfType<SceneAutoInjector>(true);
 
-                injectorObject.AddComponent<SceneAutoInjector>();
+                if (autoInject == null)
+                {
+                    var injectorObject = new GameObject(AutoInjectorName);
 
-                Undo.RegisterCreatedObjectUndo(injectorObject, $"Create {AutoInjectorName}");
+                    injectorObject.AddComponent<SceneAutoInjector>();
 
-                EditorUtility.SetDirty(injectorObject);
+                    Undo.RegisterCreatedObjectUndo(injectorObject, $"Create {AutoInjectorName}");
+
+                    EditorUtility.SetDirty(injectorObject);
+                }
+                else
+                {
+                    Debug.LogWarning("SceneAutoInjector has already been added to the scene.");
+                }
             }
             else
             {
                 Debug.LogWarning("No dependencies root in scene");
             }
         }
-        
+
         [MenuItem("IndieInject/Setup Entry Point")]
         public static void SetupCoreRoot()
         {
@@ -104,12 +119,6 @@ namespace IndieInjectSample
                     Debug.Log("Scene Dependencies Root was deleted");
                 }
             }
-        }
-
-        [InitializeOnLoadMethod]
-        private static void OnProjectLoadedInEditor()
-        {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
