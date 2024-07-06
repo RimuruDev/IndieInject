@@ -18,9 +18,19 @@ using UnityEngine;
 
 namespace IndieInject
 {
+    public enum EnableAutoInjector : byte
+    {
+        Enable = 0,
+        Disable = 1,
+    }
+
     [DefaultExecutionOrder(-500)]
     public sealed class SceneDependenciesRoot : MonoBehaviour
     {
+#if UNITY_EDITOR
+        public EnableAutoInjector EnableAutoInjector;
+#endif
+
         private void Awake()
         {
             Indie.Injector.RegisterSceneDependencies(this);

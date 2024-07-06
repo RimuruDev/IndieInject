@@ -14,11 +14,10 @@
 //
 // **************************************************************** //
 
-using IndieInject;
 using UnityEditor;
 using UnityEngine;
 
-namespace IndieInjectSample
+namespace IndieInject.Editor
 {
     [HelpURL("https://github.com/RimuruDev/IndieInject")]
     public static class IndieInjectorEditor
