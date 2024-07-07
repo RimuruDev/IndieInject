@@ -145,3 +145,6 @@ public sealed class HeroDataProvider : MonoProvider
 }
 ```
 Чтобы быстро создать SceneDependenciesRoot воспользуемся кнопкой Setup Scene в меню IndieInject. Добавим дочерний объект с компонентом HeroDataProvider и все!
+
+# Support
+[Telegram chat](https://t.me/DevLogUnity3d)
